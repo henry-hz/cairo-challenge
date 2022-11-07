@@ -21,5 +21,10 @@ run:
 		--print_output --print_info \
 		--relocate_prints
 
+run2:
+	cairo-run \
+		--program=out/${FILE}_compiled.json \
+    	--print_output --layout=small
+
 watch:
 	while inotifywait -e close_write ./*; do clear; cairo-compile ${FILE} --output out/${FILE}_compiled.json; done

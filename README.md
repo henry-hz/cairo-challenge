@@ -5,9 +5,19 @@
 
 ## Install
 
+
+* [setup-environment](https://www.cairo-lang.org/docs/quickstart.html#)
+
 - on debian, add [python-dev]
 ```
 sudo apt-get install python3-dev
+```
+
+
+Add an out folder
+
+```
+mkdir out
 ```
 
 

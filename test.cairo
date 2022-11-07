@@ -1,6 +1,9 @@
-func main() {
-    [ap] = 1000, ap++;
-    [ap] = 2000, ap++;
-    [ap] = [ap - 2] + [ap - 1], ap++;
-    ret;
+%builtins output
+
+from starkware.cairo.common.serialize import serialize_word
+
+func main{output_ptr: felt*}() {
+    serialize_word(6 / 3);
+    serialize_word(7 / 3);
+    return ();
 }
