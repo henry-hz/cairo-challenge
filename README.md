@@ -34,3 +34,5 @@ mkdir out
 * [starknet-compile](https://www.cairo-lang.org/docs/hello_starknet/intro.html)
 * [cairo-intro](https://chainstack.com/starknet-cairo-developer-introduction-part-2/)
 * [uint256-felt](https://mirror.xyz/0x845605C411132BAA06024a521a85B653F3C802dF/wfUO8KSz2IAt8yg4oslsc1HDsJqMJ6HpQAukhjwZUUU)
+* [type-safety](https://ctrlc03.github.io/#type-safety)
+* [uint256-example](https://medium.com/starkware/cairo-1-0-aa96eefb19a0)

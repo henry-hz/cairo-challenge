@@ -1,5 +1,6 @@
 %lang starknet
 
+
 from starkware.cairo.common.cairo_builtins import HashBuiltin
 from starkware.cairo.common.serialize import serialize_word
 from starkware.cairo.common.alloc import alloc
@@ -20,49 +21,36 @@ from starkware.cairo.common.uint256 import (
 
 from math import SafeUint256
 
-// Computes the sum of the memory elements at addresses:
-//   arr + 0, arr + 1, ..., arr + (size - 1).
-func array_sum(arr: felt*, size) -> felt {
-    if (size == 0) {
-        return 0;
-    }
+func sqrt{range_check_ptr}(v: Uint256, size) -> (res: Uint256) {
 
-    // size is not zero.
-    let sum_of_rest = array_sum(arr=arr + 1, size=size - 1);
-    return arr[0] + sum_of_rest;
+    let res: Uint256 = sqrt(v, size=size - 1);
+    if (size == 0) {
+        return (res=res);
+    }
+    return (res=res);
 }
 
 func mul{range_check_ptr}(a: Uint256, b: Uint256) -> (c: Uint256) {
     uint256_check(a);
-    let (c: Uint256) = SafeUint256.add(a, b);
+    let (c: Uint256) = SafeUint256.mul(a, b);
     return (c=c);
 }
 
-func div{range_check_ptr}(a: Uint256, b: Uint256) -> (c: Uint256) {
-
-    let (c: Uint256) = SafeUint256.add(a, b);
-    return (c=c);
+func div{range_check_ptr}(a: Uint256, b: Uint256) -> (c: Uint256, d: Uint256) {
+    let (c: Uint256, d: Uint256) = SafeUint256.div_rem(a, b);
+    return (c=c, d=d);
 }
 
 func main{output_ptr: felt*, range_check_ptr}() {
-    alloc_locals;
+    const CYCLES_SIZE = 4;
 
-    const ARRAY_SIZE = 4;
+    let a: Uint256 = Uint256(3,0);
+    let b: Uint256 = Uint256(3,0);
+    let v: Uint256 = Uint256(6,0);
+    let d: Uint256 = mul(a,b);
 
-    let (ptr) = alloc();
+    let (is_eq: felt) = uint256_eq(a,d);
 
-    assert [ptr] = 9;
-    assert [ptr + 1] = 16;
-    assert [ptr + 2] = 25;
-    assert [ptr + 3] = 10;
-
-    let sum = array_sum(ptr, ARRAY_SIZE);
-    serialize_word(sum);
-
-    local a: Uint256 = Uint256(3,3);
-    local b: Uint256 = Uint256(3,3);
-
-    let d = mul(a,b);
     serialize_word(3);
 
     return ();
