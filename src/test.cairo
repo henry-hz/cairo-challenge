@@ -25,26 +25,22 @@ const UNIT   = 100000;   // decimal precision
 const GUESS  = 100000;   // first guess
 const CYCLE  = 4;        // fixed cycles to run
 
-let u: Uint256 = Uint256(UNIT, 0);
-
-func calc{range_check_ptr}(s: Uint256, x: Uint256) -> (r: Uint256) {
-    let two: Uint256 = Uint256(2,0);
-    let (r1: Uint256, rem: Uint256) = SafeUint256.div_rem(s, x);    // s/x
-    let (r2: Uint256) = SafeUint256.add(x, r1);                     // x + s/x
-    let (r3: Uint256, rem: Uint256) = SafeUint256.div_rem(r2, two); // (x + s/x) / 2
-    return(r=r3);
+func fibonacci(n: felt) -> (result : felt) {
+  alloc_locals
+  if n == 0:
+    return (0)
+  end
+  if n == 1:
+    return (1)
+  end
+  let (local x) = fibonacci(n - 1)
+  let (local y) = fibonacci(n - 2)
+  return (x + y)
 }
 
-// n: the number of cycles to approximate the result
-// s: the actual calculated sqrt
-func sqrt{range_check_ptr}(n, s: Uint256) -> (r: Uint256) {
-    let s: Uint256 = calc(s, calc(s));
-    let u: Uint256 = Uint256(UNIT, 0);
-    let z: Uint256 = Uint256(0,0);
-    if (n == 0) {
-        return (r=z);
-    }
-    return (r=z);
+
+func sqrt(n: felt, s: felt) -> (r: felt) {
+    alloc_locals;
 }
 
 // decrease one point from cycle counter
@@ -54,13 +50,6 @@ func dec(c) -> felt {
 
 
 func main{output_ptr: felt*, range_check_ptr}() {
-
-    let a: Uint256 = Uint256(3,0);
-    let b: Uint256 = Uint256(3,0);
-    let v: Uint256 = Uint256(6,0);
-    //let d: Uint256 = mul(a,b);
-
-    //let (is_eq: felt) = uint256_eq(a,d);
 
     serialize_word(3);
 
