@@ -8,9 +8,8 @@ const GUESS  = 100000;   // first guess
 const CYCLE  = 4;        // fixed cycles to run
 
 func sqrt(n: felt, s: felt) -> (r: felt) {
-    alloc_locals;
     if (size == 0) {
-        return 0;
+        return 1;
     }
 
     let c = s - 1;

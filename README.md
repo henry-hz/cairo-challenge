@@ -42,3 +42,4 @@ FILE=test make watch
 * [uint256-felt](https://mirror.xyz/0x845605C411132BAA06024a521a85B653F3C802dF/wfUO8KSz2IAt8yg4oslsc1HDsJqMJ6HpQAukhjwZUUU)
 * [type-safety](https://ctrlc03.github.io/#type-safety)
 * [uint256-example](https://medium.com/starkware/cairo-1-0-aa96eefb19a0)
+* [learn-notes](https://hackmd.io/@RoboTeddy/BJZFu56wF)
