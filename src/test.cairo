@@ -22,46 +22,31 @@ from starkware.cairo.common.uint256 import (
 )
 from math import SafeUint256
 const UNIT   = 100000;   // decimal precision
-const CYCLE  = 400000;   // fixed cycles to run
 const GUESS  = 100000;   // first guess
+const CYCLE  = 4;        // fixed cycles to run
 let u: Uint256 = Uint256(UNIT, 0);
 
-func calc{range_check_ptr}(s: Uint256, x: Uint256) -> (res: Uint256) {
+func calc{range_check_ptr}(s: Uint256, x: Uint256) -> (r: Uint256) {
     let two: Uint256 = Uint256(2,0);
     let (r1: Uint256, rem: Uint256) = SafeUint256.div_rem(s, x);    // s/x
     let (r2: Uint256) = SafeUint256.add(x, r1);                     // x + s/x
     let (r3: Uint256, rem: Uint256) = SafeUint256.div_rem(r2, two); // (x + s/x) / 2
-    return(res=r3);
+    return(r=r3);
 }
 
-func sqrt{range_check_ptr}(n: Uint256, s: Uint256) -> (res: Uint256) {
+func sqrt{range_check_ptr}(n, s: Uint256) -> (r: Uint256) {
     let u: Uint256 = Uint256(UNIT, 0);
     let z: Uint256 = Uint256(0,0);
-    let s: Uint256 = calc(n, s);
-    let f = uint256_eq(n, z);
-    //if () {
-    //    return (res=res);
-    //}
-    return (res=z);
+    let s: Uint256 = calc(s, s);
+    if (n == 0) {
+        return (r=z);
+    }
+    return (r=z);
 }
 
-func mul{range_check_ptr}(a: Uint256, b: Uint256) -> (c: Uint256) {
-    uint256_check(a);
-    let (c: Uint256) = SafeUint256.mul(a, b);
-    return (c=c);
-}
-
-
-// decrease one UNIT point
-func dec{range_check_ptr}(v: Uint256) -> (res: Uint256) {
-    let u: Uint256 = Uint256(UNIT, 0);
-    let res: Uint256 = SafeUint256.sub_le(v, u);
-    return(res=res);
-}
-
-func div{range_check_ptr}(a: Uint256, b: Uint256) -> (c: Uint256, d: Uint256) {
-    let (c: Uint256, d: Uint256) = SafeUint256.div_rem(a, b);
-    return (c=c, d=d);
+// decrease one point from cycle counter
+func dec(c) -> felt {
+    return c - 1;
 }
 
 
@@ -70,9 +55,9 @@ func main{output_ptr: felt*, range_check_ptr}() {
     let a: Uint256 = Uint256(3,0);
     let b: Uint256 = Uint256(3,0);
     let v: Uint256 = Uint256(6,0);
-    let d: Uint256 = mul(a,b);
+    //let d: Uint256 = mul(a,b);
 
-    let (is_eq: felt) = uint256_eq(a,d);
+    //let (is_eq: felt) = uint256_eq(a,d);
 
     serialize_word(3);
 
