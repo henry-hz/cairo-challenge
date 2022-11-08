@@ -3,7 +3,6 @@
 // sqrt 0 s = 1
 // sqrt n s = (x + s/x) / 2 where x = sqrt (n-1) s
 
-
 from starkware.cairo.common.serialize import serialize_word
 from starkware.cairo.common.alloc import alloc
 from starkware.cairo.common.math import assert_not_zero, assert_le
@@ -22,9 +21,10 @@ from starkware.cairo.common.uint256 import (
     uint256_eq,
 )
 from math import SafeUint256
-const UNINT  = 100000;   // decimal precision
+const UNIT   = 100000;   // decimal precision
 const CYCLE  = 400000;   // fixed cycles to run
 const GUESS  = 100000;   // first guess
+let u: Uint256 = Uint256(UNIT, 0);
 
 func calc{range_check_ptr}(s: Uint256, x: Uint256) -> (res: Uint256) {
     let two: Uint256 = Uint256(2,0);
@@ -34,19 +34,29 @@ func calc{range_check_ptr}(s: Uint256, x: Uint256) -> (res: Uint256) {
     return(res=r3);
 }
 
-func sqrt{range_check_ptr}(v: Uint256, size: Uint256) -> (res: Uint256) {
-    let s: Uint256 = calc(v, size);
-    let res: Uint256 = sqrt(v, size);
-    //if (size == 0) {
+func sqrt{range_check_ptr}(n: Uint256, s: Uint256) -> (res: Uint256) {
+    let u: Uint256 = Uint256(UNIT, 0);
+    let z: Uint256 = Uint256(0,0);
+    let s: Uint256 = calc(n, s);
+    let f = uint256_eq(n, z);
+    //if () {
     //    return (res=res);
     //}
-    return (res=res);
+    return (res=z);
 }
 
 func mul{range_check_ptr}(a: Uint256, b: Uint256) -> (c: Uint256) {
     uint256_check(a);
     let (c: Uint256) = SafeUint256.mul(a, b);
     return (c=c);
+}
+
+
+// decrease one UNIT point
+func dec{range_check_ptr}(v: Uint256) -> (res: Uint256) {
+    let u: Uint256 = Uint256(UNIT, 0);
+    let res: Uint256 = SafeUint256.sub_le(v, u);
+    return(res=res);
 }
 
 func div{range_check_ptr}(a: Uint256, b: Uint256) -> (c: Uint256, d: Uint256) {
