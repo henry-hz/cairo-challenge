@@ -16,9 +16,13 @@ compile:
 	cairo-compile src/${FILE}.cairo --output out/${FILE}_compiled.json
 
 build:
+	while inotifywait -e close_write ./*; do clear;  \
 	starknet-compile src/${FILE}.cairo \
 		--output out/${FILE}_compiled.json \
-		--abi out/${FILE}_abi.json
+		--abi out/${FILE}_abi.json; \
+	done
+
+
 
 run:
 	starknet-run \

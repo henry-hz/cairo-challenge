@@ -38,14 +38,15 @@ func mul{range_check_ptr}(a: Uint256, b: Uint256) -> (c: Uint256) {
     return (c=c);
 }
 
-func div(a,b) -> felt {
-    assert_not_zero(a);
-    assert_not_zero(b);
+func div{range_check_ptr}(a: Uint256, b: Uint256) -> (c: Uint256) {
 
-    return 33;
+    let (c: Uint256) = SafeUint256.add(a, b);
+    return (c=c);
 }
 
-func main{output_ptr: felt*}() {
+func main{output_ptr: felt*, range_check_ptr}() {
+    alloc_locals;
+
     const ARRAY_SIZE = 4;
 
     let (ptr) = alloc();
@@ -58,8 +59,11 @@ func main{output_ptr: felt*}() {
     let sum = array_sum(ptr, ARRAY_SIZE);
     serialize_word(sum);
 
-    let d = div(10,3);
-    serialize_word(d);
+    local a: Uint256 = Uint256(3,3);
+    local b: Uint256 = Uint256(3,3);
+
+    let d = mul(a,b);
+    serialize_word(3);
 
     return ();
 }
