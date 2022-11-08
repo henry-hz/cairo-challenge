@@ -26,6 +26,12 @@ mkdir out
 . ./setup.sh
 ```
 
+## Develop
+
+```
+FILE=test make watch
+```
+
 ## Resources
 
 
