@@ -17,7 +17,7 @@ compile:
 
 build:
 	starknet-compile src/${FILE}.cairo \
-		--output out/${FILE}_compiled.json
+		--output out/${FILE}_compiled.json \
 		--abi out/${FILE}_abi.json
 
 run:
