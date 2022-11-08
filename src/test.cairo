@@ -24,6 +24,7 @@ from math import SafeUint256
 const UNIT   = 100000;   // decimal precision
 const GUESS  = 100000;   // first guess
 const CYCLE  = 4;        // fixed cycles to run
+
 let u: Uint256 = Uint256(UNIT, 0);
 
 func calc{range_check_ptr}(s: Uint256, x: Uint256) -> (r: Uint256) {
@@ -34,10 +35,12 @@ func calc{range_check_ptr}(s: Uint256, x: Uint256) -> (r: Uint256) {
     return(r=r3);
 }
 
+// n: the number of cycles to approximate the result
+// s: the actual calculated sqrt
 func sqrt{range_check_ptr}(n, s: Uint256) -> (r: Uint256) {
+    let s: Uint256 = calc(s, calc(s));
     let u: Uint256 = Uint256(UNIT, 0);
     let z: Uint256 = Uint256(0,0);
-    let s: Uint256 = calc(s, s);
     if (n == 0) {
         return (r=z);
     }
