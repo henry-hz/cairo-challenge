@@ -1,5 +1,7 @@
 %lang starknet
 
+// sqrt 0 s = 1
+// sqrt n s = (x + s/x) / 2 where x = sqrt (n-1) s
 
 from starkware.cairo.common.cairo_builtins import HashBuiltin
 from starkware.cairo.common.serialize import serialize_word
@@ -21,12 +23,22 @@ from starkware.cairo.common.uint256 import (
 
 from math import SafeUint256
 
-func sqrt{range_check_ptr}(v: Uint256, size) -> (res: Uint256) {
+// Sqrt n s = (x + s/x) / 2 where x = Sqrt (n-1) s
+func calc{range_check_ptr}(s: Uint256, x: Uint256) -> (res: Uint256) {
+    let two: Uint256 = Uint256(2,0);
+    let (r1: Uint256, rem: Uint256) = SafeUint256.div_rem(s, x);    // s/x
+    let (r2: Uint256) = SafeUint256.add(x, r1);                     // x + s/x
+    let (r3: Uint256, rem: Uint256) = SafeUint256.div_rem(r2, two); // (x + s/x) / 2
+    return(res=r3);
+}
 
-    let res: Uint256 = sqrt(v, size=size - 1);
-    if (size == 0) {
-        return (res=res);
-    }
+func sqrt{range_check_ptr}(v: Uint256, size: Uint256) -> (res: Uint256) {
+    const ONE = 1000000;
+    let s: Uint256 = calc(v, size);
+    let res: Uint256 = sqrt(v, size);
+    //if (size == 0) {
+    //    return (res=res);
+    //}
     return (res=res);
 }
 
@@ -41,8 +53,10 @@ func div{range_check_ptr}(a: Uint256, b: Uint256) -> (c: Uint256, d: Uint256) {
     return (c=c, d=d);
 }
 
+
 func main{output_ptr: felt*, range_check_ptr}() {
     const CYCLES_SIZE = 4;
+    const GUESS = 1;
 
     let a: Uint256 = Uint256(3,0);
     let b: Uint256 = Uint256(3,0);
