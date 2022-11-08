@@ -3,7 +3,7 @@
 
 
 
-## Install
+## Install Cairo
 
 
 * [setup-environment](https://www.cairo-lang.org/docs/quickstart.html#)
@@ -14,16 +14,15 @@ sudo apt-get install python3-dev
 ```
 
 
-Add an out folder
+## Setup
+
+Add an out folder and load env vars. Edit the setup.sh file with the paths of your home dir.
 
 ```
+# output dir
 mkdir out
-```
 
-
-## Activate
-
-```
+# setup
 . ./setup.sh
 ```
 
@@ -32,3 +31,5 @@ mkdir out
 
 * [cairo-goldmine](https://github.com/beautyisourbusiness/cairo-goldmine)
 * [vim-cairo-gist](https://gist.github.com/amanusk/f73dee988829110ad557c8cba89e4652)
+* [starknet-compile](https://www.cairo-lang.org/docs/hello_starknet/intro.html)
+* [cairo-intro](https://chainstack.com/starknet-cairo-developer-introduction-part-2/)

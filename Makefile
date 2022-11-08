@@ -13,10 +13,15 @@ clean:
 	rm -rf out/*
 
 compile:
-	cairo-compile ${FILE}.cairo --output out/${FILE}_compiled.json
+	cairo-compile src/${FILE}.cairo --output out/${FILE}_compiled.json
+
+build:
+	starknet-compile src/${FILE}.cairo \
+		--output out/${FILE}_compiled.json
+		--abi out/${FILE}_abi.json
 
 run:
-	cairo-run \
+	starknet-run \
 		--program=out/${FILE}_compiled.json \
 		--print_output --print_info \
 		--relocate_prints
