@@ -41,8 +41,9 @@ func sqrt{range_check_ptr}(n: felt, s: felt) -> (result: felt) {
     let c = n - 1;
     let (local x1) = sqrt(s,c);
     let (local x2) = sqrt(s,c);
-    let (q,r) = unsigned_div_rem((x1 + s/x2), 2);
-    return (result=q);
+    let (q1, r1) = unsigned_div_rem(s,x1);
+    let (q2, r2) = unsigned_div_rem((x1 + q1), 2);
+    return (result=q2);
 }
 
 func array_sum(arr: felt*, size) -> felt {
