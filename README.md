@@ -32,6 +32,12 @@ mkdir out
 FILE=test make watch
 ```
 
+## Run
+
+```
+FILE=test make compile && FILE=test make run
+```
+
 ## Resources
 
 

@@ -1,4 +1,4 @@
-%lang starknet
+%builtins output
 
 from starkware.cairo.common.serialize import serialize_word
 
@@ -23,13 +23,15 @@ func fibo(n : felt) -> (result : felt) {
 }
 
 func sqrt(n: felt, s: felt) -> felt {
+  alloc_locals;
     if (n == 0) {
         return 1;
     }
 
     let c = n - 1;
-    //let next = sqrt(s,c) / 2;
-    let next = 3;
+    let (local x1) = sqrt(s,c);
+    let (local x2) = sqrt(s,c);
+    let next = (x1 + s/x2) / 2
     return next;
 }
 
@@ -44,8 +46,9 @@ func array_sum(arr: felt*, size) -> felt {
 }
 
 
-func main{output_ptr: felt*, range_check_ptr}() {
-    let x = fibo(3);
+func main{output_ptr: felt*}() {
+    let (x) = fibo(10);
+    assert x = 55;
     serialize_word(x);
     return ();
 }
