@@ -16,7 +16,6 @@ func sqrt{range_check_ptr}(n: felt, s: felt) -> (result: felt) {
     }
 
     let (local x1) = sqrt(n - 1, s);
-    let (local x2) = sqrt(n - 1, s);
     let (q1, r1) = unsigned_div_rem(s,x1);
     let (q2, r2) = unsigned_div_rem((x1 + q1), 2);
     return (result=q2);
@@ -24,7 +23,7 @@ func sqrt{range_check_ptr}(n: felt, s: felt) -> (result: felt) {
 
 func main{output_ptr: felt*, range_check_ptr}() {
     // % steps
-    let (y) = sqrt(5, 16);
+    let (y) = sqrt(10, 2000);
     //assert x = 55;
     serialize_word(y);
     return ();
