@@ -49,3 +49,13 @@ FILE=test make compile && FILE=test make run
 * [type-safety](https://ctrlc03.github.io/#type-safety)
 * [uint256-example](https://medium.com/starkware/cairo-1-0-aa96eefb19a0)
 * [learn-notes](https://hackmd.io/@RoboTeddy/BJZFu56wF)
+
+
+## Issues
+
+
+* Fixed known ap error using local:
+
+```
+cairo Only functions with known ap change may be used in an expression.
+```
