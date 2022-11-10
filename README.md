@@ -1,6 +1,6 @@
 # Challenge
 
-Write a sqrt algorithm in cairo using with $10^(18)$ [fixed-point-aritmetic](https://en.wikipedia.org/wiki/Fixed-point_arithmetic)
+Write a sqrt algorithm in cairo using with $10^{18}$ [fixed-point-aritmetic](https://en.wikipedia.org/wiki/Fixed-point_arithmetic)
 
 
 
