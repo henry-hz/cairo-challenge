@@ -17,7 +17,6 @@ func sqrt{range_check_ptr}(n: felt, s: felt) -> (result: felt) {
     if (n == 0) {
         return (result=1);
     }
-
     let (local x) = sqrt(n - 1, s);
     let (q1, r1) = unsigned_div_rem(s, x);
     let (q2, r2) = unsigned_div_rem((x + q1), 2);
@@ -29,7 +28,6 @@ func sqrt_uint256{range_check_ptr}(n: felt, s: Uint256) -> (result: Uint256) {
     if (n == 0) {
         return (result = Uint256(1,0));
     }
-
     let (x: Uint256) = sqrt_uint256(n - 1, s);
     let (q1: Uint256) = SafeUint256.warp_div256(s, x);
     let (r1: Uint256) = SafeUint256.add(x, q1);
@@ -42,7 +40,6 @@ func sqrt_hp{range_check_ptr}(n: felt, s: Uint256) -> (result: Uint256) {
     if (n == 0) {
         return (result = Uint256(1,0));
     }
-
     let (x: Uint256) = sqrt_hp(n - 1, s);
     let (q1: Uint256) = SafeUint256.warp_div256(s, x);
     let (r1: Uint256) = SafeUint256.add(x, q1);
