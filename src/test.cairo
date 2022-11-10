@@ -11,6 +11,9 @@ from math import SafeUint256
 
 const STEPS = 20;
 
+const WAD = 10 ** 2;
+const RAY = 10 ** 27;
+const RAD = 10 ** 45;
 
 func sqrt{range_check_ptr}(n: felt, s: felt) -> (result: felt) {
     alloc_locals;
@@ -30,21 +33,40 @@ func sqrt_hp{range_check_ptr}(n: felt, s: Uint256) -> (result: Uint256) {
         return (result = Uint256(1,0));
     }
 
+    // steps
     let (x: Uint256) = sqrt_hp(n - 1, s);
-    let (q1: Uint256) = SafeUint256.warp_div256(s, x);
-    let (r1: Uint256) = SafeUint256.add(x, q1);
+
+    // boost precision
+    let (s1: Uint256) = SafeUint256.mul(s, Uint256(WAD,0));
+    let (x1: Uint256) = SafeUint256.mul(x, Uint256(WAD,0));
+
+    // calculate
+    let (q1: Uint256) = SafeUint256.warp_div256(s1, x1);
+
+    // low precision
+    let (q3: Uint256) = SafeUint256.warp_div256(q1, Uint256(WAD,0));
+    let (x2: Uint256) = SafeUint256.warp_div256(x1, Uint256(WAD,0));
+
+    let (r1: Uint256) = SafeUint256.add(x2, q3);
     let (q2: Uint256) = SafeUint256.warp_div256(r1, Uint256(2,0));
     return(result = q2);
 }
 
 func main{output_ptr: felt*, range_check_ptr}() {
+    alloc_locals;
     // low precision
     let (y) = sqrt(STEPS, 16);
     assert y = 4;
     serialize_word(y);
 
     // high precision
-    //let (y1: Uint256) = sqrt_hp(STEPS, Uint256(16,0));
+    let (y1: Uint256) = sqrt_hp(STEPS, Uint256(16,0));
+    //assert y1 = Uint256(4,0);
+    serialize_word(y1.low);
+    serialize_word(y1.high);
+    serialize_word(RAY);
     return ();
 }
+
+
 
