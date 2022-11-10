@@ -51,6 +51,13 @@ FILE=test make compile && FILE=test make run
 * [learn-notes](https://hackmd.io/@RoboTeddy/BJZFu56wF)
 
 
+## Projects
+
+* [ecosystem](https://www.starknet-ecosystem.com/en)
+* [amm-zk](https://github.com/10k-swap/10k_swap-contracts)
+* [maker-bridge](https://github.com/makerdao/starknet-dai-bridge)
+
+
 ## Issues
 
 

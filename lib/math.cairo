@@ -14,6 +14,7 @@ from starkware.cairo.common.uint256 import (
     uint256_eq,
 )
 namespace SafeUint256 {
+    const SHIFT = 2 ** 128;
     // Adds two integers.
     // Reverts if the sum overflows.
     func add{range_check_ptr}(a: Uint256, b: Uint256) -> (c: Uint256) {
@@ -95,5 +96,17 @@ namespace SafeUint256 {
 
         let (c: Uint256, rem: Uint256) = uint256_unsigned_div_rem(a, b);
         return (c=c, rem=rem);
+    }
+
+    func warp_div256{range_check_ptr}(lhs : Uint256, rhs : Uint256) -> (res : Uint256) {
+        if (rhs.high == 0) {
+            if (rhs.low == 0) {
+                with_attr error_message("Division by zero error") {
+                    assert 1 = 0;
+                }
+            }
+        }
+        let (res : Uint256, _) = uint256_unsigned_div_rem(lhs, rhs);
+        return (res = res);
     }
 }
