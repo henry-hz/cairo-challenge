@@ -14,6 +14,7 @@ from starkware.cairo.common.uint256 import (
     uint256_eq,
 )
 namespace SafeUint256 {
+    const WAD   = 10 ** 18;
     const SHIFT = 2 ** 128;
     // Adds two integers.
     // Reverts if the sum overflows.
@@ -96,6 +97,40 @@ namespace SafeUint256 {
 
         let (c: Uint256, rem: Uint256) = uint256_unsigned_div_rem(a, b);
         return (c=c, rem=rem);
+    }
+
+    func wmul{range_check_ptr}(lhs : Uint256, rhs : Uint256) -> (res : Uint256) {
+        alloc_locals;
+        if (rhs.high == 0) {
+            if (rhs.low == 0) {
+                with_attr error_message("Division by zero error") {
+                    assert 1 = 0;
+                }
+            }
+        }
+        // z = add(mul(x, y), WAD / 2) / WAD;
+        let (z1: Uint256) = mul(lhs, rhs);
+        let (z2: Uint256) = warp_div256(Uint256(WAD,0), Uint256(2,0));
+        let (z3: Uint256) = add(z1,z2);
+        let (z4: Uint256) = warp_div256(z3, Uint256(WAD,0));
+        return (res = z4);
+    }
+
+    func wdiv{range_check_ptr}(lhs : Uint256, rhs : Uint256) -> (res : Uint256) {
+        alloc_locals;
+        if (rhs.high == 0) {
+            if (rhs.low == 0) {
+                with_attr error_message("Division by zero error") {
+                    assert 1 = 0;
+                }
+            }
+        }
+        // z = add(mul(x, WAD), y / 2) / y;
+        let (z1: Uint256) = mul(lhs, Uint256(WAD,0));
+        let (z2: Uint256) = warp_div256(rhs, Uint256(2,0));
+        let (z3: Uint256) = add(z1, z2);
+        let (z4: Uint256) = warp_div256(z3, rhs);
+        return (res = z4);
     }
 
     func warp_div256{range_check_ptr}(lhs : Uint256, rhs : Uint256) -> (res : Uint256) {

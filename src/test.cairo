@@ -10,7 +10,7 @@ from starkware.cairo.common.uint256 import (Uint256,uint256_add)
 from math import SafeUint256
 
 const STEPS = 30;
-const WAD   = 10**5;
+const WAD   = 10**18;
 
 
 func sqrt{range_check_ptr}(n: felt, s: felt) -> (result: felt) {
@@ -39,30 +39,12 @@ func sqrt_uint256{range_check_ptr}(n: felt, s: Uint256) -> (result: Uint256) {
 func sqrt_hp{range_check_ptr}(n: felt, s: Uint256) -> (result: Uint256) {
     alloc_locals;
     if (n == 0) {
-        return (result = Uint256(1*WAD,0));
+        return (result = Uint256(1 * WAD, 0));
     }
-
-    // steps
-    let (x: Uint256) = sqrt_hp(n - 1, s);
-
-    // boost precision
-    let (s1: Uint256) = SafeUint256.mul(s, Uint256(WAD,0));
-    let (x1: Uint256) = SafeUint256.mul(x, Uint256(WAD,0));
-
-    // calculate
-    let (q1: Uint256) = SafeUint256.warp_div256(s1, x1);
-
-    // low precision
-    let (q3: Uint256) = SafeUint256.warp_div256(q1, Uint256(WAD,0));
-    let (x2: Uint256) = SafeUint256.warp_div256(x1, Uint256(WAD,0));
-
-    let (r1: Uint256) = SafeUint256.add(x2, q3);
-
-    // boost precision
-    let (r2: Uint256) = SafeUint256.mul(r1, Uint256(WAD,0));
-    let (two: Uint256) = SafeUint256.mul(Uint256(2,0), Uint256(WAD,0));
-
-    let (q2: Uint256) = SafeUint256.warp_div256(r2, two);
+    let (x: Uint256)  = sqrt_uint256(n - 1, s);
+    let (q1: Uint256) = SafeUint256.wdiv(s, x);
+    let (r1: Uint256) = SafeUint256.add(x, q1);
+    let (q2: Uint256) = SafeUint256.wdiv(r1, Uint256(2*WAD,0));
     return(result = q2);
 }
 
@@ -78,8 +60,24 @@ func main{output_ptr: felt*, range_check_ptr}() {
     assert y2.low = 483977;
     serialize_word(y2.low);
 
-    // use high precision
-    let (y3: Uint256) = sqrt_hp(STEPS, Uint256(2*WAD,0));
+    // test wmul
+    // a = 10.5 * WAD = 10500000000000000000
+    // b = 1.05 * WAD = 1050000000000000000
+    // a * b = 11025000000000000000
+    let (r1: Uint256) = SafeUint256.wmul(Uint256(10500000000000000000,0), Uint256(1050000000000000000,0));
+    assert r1.low = 11025000000000000000;
+    serialize_word(r1.low);
+
+    // test wdiv
+    // a = 10.5 * WAD = 10500000000000000000
+    // b = 1.05 * WAD = 1050000000000000000
+    // a / b = 10 * WAD
+    let (r2: Uint256) = SafeUint256.wdiv(Uint256(10500000000000000000,0), Uint256(1050000000000000000,0));
+    assert r2.low = 10*WAD;
+    serialize_word(r2.low);
+
+    // sqrt using WAD high precision
+    let (y3: Uint256) = sqrt_hp(STEPS, Uint256(16*WAD,0));
     //assert y3.low = 1;
     serialize_word(y3.low);
     return ();
