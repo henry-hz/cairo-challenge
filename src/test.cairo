@@ -38,13 +38,15 @@ func sqrt_hp{range_check_ptr}(n: felt, s: Uint256) -> (result: Uint256) {
 }
 
 func main{output_ptr: felt*, range_check_ptr}() {
+    alloc_locals;
     // low precision
     let (y) = sqrt(STEPS, 16);
     assert y = 4;
     serialize_word(y);
 
     // high precision
-    //let (y1: Uint256) = sqrt_hp(STEPS, Uint256(16,0));
+    let (y1: Uint256) = sqrt_hp(STEPS, Uint256(16,0));
+    serialize_word(y1.low);
     return ();
 }
 
