@@ -15,7 +15,7 @@ from starkware.cairo.common.uint256 import (
     uint256_eq,
 )
 namespace SafeUint256 {
-    const WAD   = 10 ** 30;
+    const WAD   = 10 ** 32;
     const SHIFT = 2 ** 128;
     // Adds two integers.
     // Reverts if the sum overflows.
