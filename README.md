@@ -53,6 +53,9 @@ FILE=test make compile && FILE=test make run
 * [learn-notes](https://hackmd.io/@RoboTeddy/BJZFu56wF)
 * [fixed-point-lib](https://github.com/influenceth/cairo-math-64x61/blob/master/contracts/cairo_math_64x61/math64x61.cairo)
 * [safe-math](https://github.com/NethermindEth/Cairo-SafeMath)
+* [floating-point-in-solidity](https://levelup.gitconnected.com/simulating-floating-point-division-in-solidity-35b56d2b597e)
+* [512-bit-divition](https://medium.com/wicketh/mathemagic-512-bit-division-in-solidity-afa55870a65)
+* [256-bit-computing](https://www.wikiwand.com/en/256-bit_computing)
 
 
 ## Projects
@@ -99,4 +102,5 @@ func main{output_ptr: felt*, range_check_ptr}() {
 }
 
 ```
-
+340282366920938463463374607431768211456 - 2**128 [39 digits]
+141421356237309504880168872420969807857 - my solution [39 digits], looping 10 cycles

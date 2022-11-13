@@ -9,8 +9,8 @@ from starkware.cairo.common.math import assert_nn_le, unsigned_div_rem
 from starkware.cairo.common.uint256 import (Uint256,uint256_add)
 from math import SafeUint256
 
-const STEPS = 40;
-const WAD   = 10**32;
+const STEPS = 10;
+const WAD   = 10**38;
 
 
 func sqrt_hp{range_check_ptr}(n: felt, s: Uint256) -> (result: Uint256) {
@@ -29,6 +29,6 @@ func main{output_ptr: felt*, range_check_ptr}() {
     alloc_locals;
     let (y4: Uint256) = sqrt_hp(STEPS, Uint256(2*WAD,0));
     serialize_word(y4.low);
-    assert y4.low = 141421356237309504880168872420970;
+    assert y4.low = 141421356237309504880168872420969807857;
     return ();
 }
