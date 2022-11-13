@@ -70,3 +70,33 @@ FILE=test make compile && FILE=test make run
 ```
 cairo Only functions with known ap change may be used in an expression.
 ```
+
+
+
+## Draft
+
+```
+func sqrt{range_check_ptr}(n: felt, s: felt) -> (result: felt) {
+    alloc_locals;
+    if (n == 0) {
+        return (result = WAD);
+    }
+    let (local x) = sqrt(n - 1, s);
+    let q1 = div(s, x);
+    let q2 = div((x + q1), 2 * WAD);
+    return (result = q2);
+}
+
+func main{output_ptr: felt*, range_check_ptr}() {
+    // test division
+    let r1 = div(10500000000000000000, 1050000000000000000);
+    assert r1 = 10*WAD;
+
+    // high precision
+    let (y1) = sqrt(STEPS, 2*WAD);
+    assert y1 = 1414213562373095049;
+    return ();
+}
+
+```
+
