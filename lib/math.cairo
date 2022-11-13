@@ -14,8 +14,10 @@ from starkware.cairo.common.uint256 import (
     uint256_lt,
     uint256_eq,
 )
+const PRECISION_L = 10**38;
+const PRECISION_H = 0;
+
 namespace SafeUint256 {
-    const WAD   = 10 ** 38;
     const SHIFT = 2 ** 128;
     // Adds two integers.
     // Reverts if the sum overflows.
@@ -110,10 +112,11 @@ namespace SafeUint256 {
             }
         }
         // z = add(mul(x, y), WAD / 2) / WAD;
+        let WAD = Uint256(low=PRECISION_L, high=PRECISION_H);
         let (z1: Uint256) = mul(lhs, rhs);
-        let (z2: Uint256) = warp_div256(Uint256(WAD,0), Uint256(2,0));
+        let (z2: Uint256) = warp_div256(WAD, Uint256(2,0));
         let (z3: Uint256) = add(z1,z2);
-        let (z4: Uint256) = warp_div256(z3, Uint256(WAD,0));
+        let (z4: Uint256) = warp_div256(z3, WAD);
         return (res = z4);
     }
 
@@ -127,30 +130,14 @@ namespace SafeUint256 {
             }
         }
         // z = add(mul(x, WAD), y / 2) / y;
-        let (z1: Uint256) = mul(lhs, Uint256(WAD,0));
+        let WAD = Uint256(low=PRECISION_L, high=PRECISION_H);
+        let (z1: Uint256) = mul(lhs, WAD);
         let (z2: Uint256) = warp_div256(rhs, Uint256(2,0));
         let (z3: Uint256) = add(z1, z2);
         let (z4: Uint256) = warp_div256(z3, rhs);
         return (res = z4);
     }
 
-    func wmul2{range_check_ptr}(x, y) -> felt {
-        alloc_locals;
-        let z1 = x * WAD;
-        let (z2,_) = unsigned_div_rem(y,2);
-        let z3 = z1 + z2;
-        let (z4,_) = unsigned_div_rem(z3, WAD);
-        return z4;
-    }
-
-    func wdiv2{range_check_ptr}(x,y) -> felt {
-        alloc_locals;
-        let z1 = x * WAD;
-        let (z2,_) = unsigned_div_rem(y, 2);
-        let z3 = z1 + z2;
-        let (z4,_) = unsigned_div_rem(z3,y);
-        return z4;
-    }
 
     func warp_div256{range_check_ptr}(lhs : Uint256, rhs : Uint256) -> (res : Uint256) {
         if (rhs.high == 0) {
