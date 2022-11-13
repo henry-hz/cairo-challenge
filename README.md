@@ -52,6 +52,7 @@ FILE=test make compile && FILE=test make run
 * [uint256-example](https://medium.com/starkware/cairo-1-0-aa96eefb19a0)
 * [learn-notes](https://hackmd.io/@RoboTeddy/BJZFu56wF)
 * [fixed-point-lib](https://github.com/influenceth/cairo-math-64x61/blob/master/contracts/cairo_math_64x61/math64x61.cairo)
+* [safe-math](https://github.com/NethermindEth/Cairo-SafeMath)
 
 
 ## Projects

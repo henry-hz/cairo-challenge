@@ -35,4 +35,5 @@ s-run:
 run:
 	cairo-run \
 		--program=out/${FILE}_compiled.json \
-    	--print_output --layout=small
+    	--print_output --layout=small --print_info \
+		--print_memory

@@ -1,0 +1,4 @@
+cairo-run \
+	--program=out/test_compiled.json \
+    	--print_output --layout=small --print_info \
+	--print_memory
