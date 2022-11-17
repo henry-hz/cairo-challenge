@@ -14,7 +14,7 @@ from starkware.cairo.common.uint256 import (
     uint256_lt,
     uint256_eq,
 )
-const PRECISION_L = 10**38;
+const PRECISION_L = 10**10;
 const PRECISION_H = 0;
 
 namespace SafeUint256 {
@@ -83,6 +83,29 @@ namespace SafeUint256 {
         return (c=c);
     }
 
+    // Multiplies two integers
+    func mul_512{range_check_ptr}(a: Uint256, b: Uint256) -> (c: Uint256) {
+        alloc_locals;
+        uint256_check(a);
+        uint256_check(b);
+        let (a_zero) = uint256_eq(a, Uint256(0, 0));
+        if (a_zero == TRUE) {
+            return (c=a);
+        }
+
+        let (b_zero) = uint256_eq(b, Uint256(0, 0));
+        if (b_zero == TRUE) {
+            return (c=b);
+        }
+
+        let (c: Uint256, d: Uint256) = uint256_mul(a, b);
+        let WAD = Uint256(low=PRECISION_L, high=PRECISION_H);
+        let (z1: Uint256) = warp_div256(c, WAD);
+        let (z2: Uint256) = warp_div256(d, WAD);
+        let (s1: Uint256) = add(z1, z2);
+        return (c=s1);
+    }
+
     // Integer division of two numbers. Returns uint256 quotient and remainder.
     // Reverts if divisor is zero as per OpenZeppelin's Solidity implementation.
     // Cairo's `uint256_unsigned_div_rem` already checks:
@@ -113,10 +136,10 @@ namespace SafeUint256 {
         }
         // z = add(mul(x, y), WAD / 2) / WAD;
         let WAD = Uint256(low=PRECISION_L, high=PRECISION_H);
-        let (z1: Uint256) = mul(lhs, rhs);
-        let (z2: Uint256) = warp_div256(WAD, Uint256(2,0));
-        let (z3: Uint256) = add(z1,z2);
-        let (z4: Uint256) = warp_div256(z3, WAD);
+        let (z1: Uint256, o1: Uint256) = uint256_mul(lhs, rhs);
+        let (z2: Uint256)              = warp_div256(WAD, Uint256(2,0));
+        let (z3: Uint256)              = add(z1,z2);
+        let (z4: Uint256)              = warp_div256(z3, WAD);
         return (res = z4);
     }
 
@@ -131,9 +154,9 @@ namespace SafeUint256 {
         }
         // z = add(mul(x, WAD), y / 2) / y;
         let WAD = Uint256(low=PRECISION_L, high=PRECISION_H);
-        let (z1: Uint256) = mul(lhs, WAD);
-        let (z2: Uint256) = warp_div256(rhs, Uint256(2,0));
-        let (z3: Uint256) = add(z1, z2);
+        let (z1: Uint256, o1:Uint256)  = uint256_mul(lhs, WAD);
+        let (z2: Uint256)              = warp_div256(rhs, Uint256(2,0));
+        let (z3: Uint256)              = add(z1, z2);
         let (z4: Uint256) = warp_div256(z3, rhs);
         return (res = z4);
     }

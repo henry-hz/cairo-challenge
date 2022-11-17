@@ -57,6 +57,11 @@ FILE=test make compile && FILE=test make run
 * [512-bit-divition](https://medium.com/wicketh/mathemagic-512-bit-division-in-solidity-afa55870a65)
 * [256-bit-computing](https://www.wikiwand.com/en/256-bit_computing)
 * [1-million-digits](https://apod.nasa.gov/htmltest/gifcity/sqrt2.1mil)
+* [512-full-multiply](https://medium.com/wicketh/mathemagic-full-multiply-27650fec525d)
+* [long-multiplication](https://en.wikipedia.org/wiki/Multiplication_algorithm#Long_multiplication)
+* [felt-explained](https://www.youtube.com/watch?v=jcrAq71WwSM)
+* [top-9-math](https://typefully.com/Starknet_Intern/aVMUp7A)
+
 
 
 ## Projects
